@@ -4,6 +4,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import Home from './components/Home'
 import Snip from './components/Snip'
+import Viewsnip from './components/Viewsnip'
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,15 @@ const router = createBrowserRouter([
       <Navbar/>
       <Snip/>
     </div>
-  }
+  },
+   {
+    path : "/viewsnip/:id",
+    element : <div>
+      <Navbar/>
+      <Viewsnip/>
+    </div>
+  },
+  
 ])
 
 function App() {
@@ -27,7 +36,6 @@ function App() {
   return (
     <>
    <RouterProvider router={router} />
-
     </>
   )
 }
