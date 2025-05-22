@@ -4,26 +4,34 @@ import { RemoveFromSnip } from '../Redux/features/SnipSlice'
 import { useNavigate } from 'react-router-dom';
 import { Copy, Drumstick, Eye, LucideDelete, Pencil, Trash2, VideoIcon} from 'lucide-react'
 import toast from 'react-hot-toast';
-function Snip() {
-  
-    const data = useSelector((state)=> state.snip.snips)
-    const dispatch = useDispatch();
-    const [search, setsearch] = useState('')
-   
-      const filteredData = data.filter((item)=> item.title.toLowerCase().includes(search.toLowerCase()))
 
-    function handledelete(index) {
-       dispatch(RemoveFromSnip(index))  
-    }
-    const navigate = useNavigate()
-    function handleview(id) {
-      console.log(id);
-       navigate(`/viewsnip/${id}`)
-    }
+function Snip() {
    
+  const data = useSelector((state)=> state.snip.snips)
+  const dispatch = useDispatch();
+  const [search, setsearch] = useState('')
+  
+  const filteredData = data.filter((item)=> item.title.toLowerCase().includes(search.toLowerCase()))
+
+  function handledelete(index) {
+    dispatch(RemoveFromSnip(index))  
+  }
+  const navigate = useNavigate()
+  function handleview(id) {
+    console.log(id);
+    navigate(`/viewsnip/${id}`)
+  }
+
   return (
     <div className="space-y-10">
-      <input type="search" placeholder='search here' onChange={(e)=>setsearch(e.target.value)} />
+      <div className="flex justify-center">
+        <input 
+          type="search" 
+          placeholder='Search notes...' 
+          onChange={(e)=>setsearch(e.target.value)}
+          className="w-64 px-3 py-1.5 text-sm border border-gray-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition bg-gray-50 text-gray-800 placeholder-gray-500 mt-[2rem]"
+        />
+      </div>
       {filteredData.map((item, i) => (
         
         <div
@@ -55,7 +63,7 @@ function Snip() {
                 <span className="material-icons text-blue-500 group-hover:scale-110 transition text-xl" onClick={()=>handleview(item._id)}> <Eye/> </span>
               </button>
 
-               <button
+              <button
                 className="group relative p-2 rounded-full bg-blue-50 hover:bg-blue-100 transition"
                 aria-label="Edit"
               >
