@@ -18,8 +18,15 @@ export const snipSlice = createSlice({
            toast.success ("created Successfully")
         },
         updatetoSnip : (state , action ) =>{
-          
+           const updatedsnip = action.payload
+              const index = state.snips.findIndex(snip => snip._id === updatedsnip._id);
+          if (index !== -1) {
+        state.snips[index] = updatedsnip;
+        localStorage.setItem("snips", JSON.stringify(state.snips));
+        toast.success("Updated successfully");
+         
 
+    }
         },
         ResetAllSnip : (state , action ) =>{
             state.snips =[]
