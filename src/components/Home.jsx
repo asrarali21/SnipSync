@@ -5,8 +5,10 @@ import { useSearchParams } from 'react-router-dom'
 import { addtoSnip, updatetoSnip } from '../Redux/features/SnipSlice'
 import Snip from './Snip'
 import { useEffect } from 'react'
-import { Copy } from 'lucide-react'
-
+import { Copy, WandSparkles } from 'lucide-react'
+import axios from "axios"
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY
+ 
 function Home() {
   const [title, setTitle] = useState("")
   const [value, setvalue] = useState("")
@@ -49,8 +51,21 @@ function Home() {
     } else {
       dispatch (addtoSnip(snip))
     }
-  
+
   }
+   async function  GenerateSummary() {
+      setvalue("loading...");
+      const response = await axios ({
+          url : `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+          method : 'post',
+          data : {"contents": [ {"parts": [ { "text": `Summarize this note in one line : ${value}`}]}]
+}
+        })
+
+        setvalue(response['data']['candidates'][0]['content']['parts'][0]['text']);
+    }
+    
+  
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
       <div className="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-md p-6">
@@ -64,7 +79,12 @@ function Home() {
             placeholder='Enter title...' 
             type="text"  
           />
-         
+      <button 
+        className='flex items-center gap-2 px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-lg transition-colors duration-200 font-medium border border-amber-200' 
+        onClick={GenerateSummary}
+      >
+        Summarize with AI <WandSparkles className="w-4 h-4"/>
+      </button>
                   <textarea 
             className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800 font-mono"
             value={value} 
